@@ -31,7 +31,7 @@ podTemplate(
     stages{
       stage('Deploy to Production'){
         parallel{
-          stage('Deploy to onprem cluster'){}
+          stage('Deploy to onprem cluster'){
             script {
               openshift.withCluster() {
                 def srcCatalogRef = ''
