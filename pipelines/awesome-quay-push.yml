@@ -1,0 +1,43 @@
+import groovy.json.JsonOutput
+def app = "account"
+def imageSourceProject = "awesome"
+def notifySlack(text, channel, attachments) {
+    def slackURL = env.SLACK_URL
+    def jenkinsIcon = env.MESSAGE_ICON
+
+    def payload = JsonOutput.toJson([text: text,
+        channel: channel,
+        username: "openshift",
+        icon_url: jenkinsIcon,
+        attachments: attachments
+    ])
+    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
+}
+podTemplate(
+  label: "scopeo",
+  cloud: "openshift",
+  inheritFrom: "maven",
+  containers: [
+    containerTemplate(
+      name: "jnlp",
+      image: "quay.io/gamerefinery/jenkins-slave-skopeo-centos:master",
+      resourceRequestMemory: "512Mi",
+      resourceLimitMemory: "1Gi"
+    )
+  ]
+) {
+  node('scopeo') {
+    stage('Push to Quay'){
+      script {
+        openshift.withCluster() {
+          withCredentials([usernamePassword(credentialsId: "awesome-quay-push", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
+            def srcCatalogRef = openshift.selector("istag", "account:latest").object().image.dockerImageReference
+            def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
+            sh "skopeo copy docker://${srcCatalogRef} docker://quay.io/edhat-emea-ssa-team/awesome:latest --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
+          }
+        }
+      }
+      notifySlack("awesome - Release pushed to Quay for scanning. <https://quay.io/repository/edhat-emea-ssa-team/awesome?tab=tags|View image> ", env.SLACK_CHANNEL, [])
+    }
+  }
+}
