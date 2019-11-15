@@ -29,12 +29,11 @@ podTemplate(
 ) {
   node('skopeo') {
     stage('Deploy to Production'){
-      parallel{
         stage('Deploy to onprem cluster'){
           script {
             openshift.withCluster() {
               def srcCatalogRef = ''
-              openshift.withProject( 'fantastic'){
+              openshift.withProject( "fantastic ){
                 srcCatalogRef = openshift.selector("istag", "awesome:production").object().image.dockerImageReference
                 withCredentials([usernamePassword(credentialsId: "fantastic-onprem-docker-push-secret", usernameVariable: "REGISTRY_USER", passwordVariable: "REGISTRY_PWD")]) {
                   def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
@@ -43,21 +42,21 @@ podTemplate(
               }
             }
           }
-          notifySlack("${app} - Deployed to onprem.", env.SLACK_CHANNEL, [])
+          notifySlack("awesome - Deployed to onprem.", env.SLACK_CHANNEL, [])
         }
         stage('Deploy to US'){
           script {
             sh "echo Deploy to US"
           }
-          notifySlack("${app} - Deployed to US.", env.SLACK_CHANNEL, [])
+          notifySlack("awesome - Deployed to US.", env.SLACK_CHANNEL, [])
         }
         stage('Deploy to APAC'){
           script {
             sh "echo Deploy to APAC"
           }
-          notifySlack("${app} - Deployed to APAC.", env.SLACK_CHANNEL, [])
+          notifySlack("awesome - Deployed to APAC.", env.SLACK_CHANNEL, [])
         }
       }
-    }
+    
   }
 }
