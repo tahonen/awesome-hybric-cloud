@@ -37,7 +37,7 @@ podTemplate(
           }
         }
       }
-      notifySlack("${app} - Image pushed to Quay for scanning. <https://quay.io/repository/edhat-emea-ssa-team/${app}?tab=tags|View image> ", env.SLACK_CHANNEL, [])
+      notifySlack("${app} - Image pushed to Quay for scanning. <https://quay.io/repository/redhat-emea-ssa-team/${app}?tab=tags|View image> ", env.SLACK_CHANNEL, [])
     }
   }
 }
