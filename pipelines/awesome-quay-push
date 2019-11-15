@@ -1,6 +1,6 @@
 import groovy.json.JsonOutput
-def app = "account"
-def imageSourceProject = "awesome"
+def app = "awesome"
+def imageSourceProject = "fantastic"
 def notifySlack(text, channel, attachments) {
     def slackURL = env.SLACK_URL
     def jenkinsIcon = env.MESSAGE_ICON
@@ -33,11 +33,11 @@ podTemplate(
           withCredentials([usernamePassword(credentialsId: "awesome-quay-push", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
             def srcCatalogRef = openshift.selector("istag", "account:latest").object().image.dockerImageReference
             def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
-            sh "skopeo copy docker://${srcCatalogRef} docker://quay.io/edhat-emea-ssa-team/awesome:latest --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
+            sh "skopeo copy docker://${srcCatalogRef} docker://quay.io/edhat-emea-ssa-team/${app}:latest --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
           }
         }
       }
-      notifySlack("awesome - Release pushed to Quay for scanning. <https://quay.io/repository/edhat-emea-ssa-team/awesome?tab=tags|View image> ", env.SLACK_CHANNEL, [])
+      notifySlack("${app} - Image pushed to Quay for scanning. <https://quay.io/repository/edhat-emea-ssa-team/${app}?tab=tags|View image> ", env.SLACK_CHANNEL, [])
     }
   }
 }
