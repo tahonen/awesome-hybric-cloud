@@ -34,7 +34,7 @@ podTemplate(
           script {
             openshift.withCluster() {
               def srcCatalogRef = ''
-              openshift.withProject( "fantastic ){
+              openshift.withProject( 'fantastic'){
                 srcCatalogRef = openshift.selector("istag", "awesome:production").object().image.dockerImageReference
                 withCredentials([usernamePassword(credentialsId: "fantastic-onprem-docker-push-secret", usernameVariable: "REGISTRY_USER", passwordVariable: "REGISTRY_PWD")]) {
                   def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
