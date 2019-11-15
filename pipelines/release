@@ -28,7 +28,6 @@ podTemplate(
   ]
 ) {
   node('skopeo') {
-    stages{
       stage('Deploy to Production'){
         parallel{
           stage('Deploy to onprem cluster'){
@@ -63,6 +62,4 @@ podTemplate(
         }
       }
     }
-
-  }
 }
