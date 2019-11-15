@@ -34,11 +34,11 @@ podTemplate(
           script {
             openshift.withCluster() {
               def srcCatalogRef = ''
-              openshift.withProject( "${imageSourceProject}" ){
-                srcCatalogRef = openshift.selector("istag", "${app}:production").object().image.dockerImageReference
+              openshift.withProject( "fantastic ){
+                srcCatalogRef = openshift.selector("istag", "awesome:production").object().image.dockerImageReference
                 withCredentials([usernamePassword(credentialsId: "fantastic-onprem-docker-push-secret", usernameVariable: "REGISTRY_USER", passwordVariable: "REGISTRY_PWD")]) {
                   def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
-                  sh "skopeo copy docker://${srcCatalogRef} docker://default-route-openshift-image-registry.apps.ocp4.ocp.ninja/${productionProject}/${app}:production --src-creds openshift:${srcToken} --dest-creds \"openshift:$REGISTRY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
+                  sh "skopeo copy docker://${srcCatalogRef} docker://default-route-openshift-image-registry.apps.ocp4.ocp.ninja/fantastic-prod/awesome:production --src-creds openshift:${srcToken} --dest-creds \"openshift:$REGISTRY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
                 }
               }
             }
