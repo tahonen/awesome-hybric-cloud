@@ -20,7 +20,7 @@ podTemplate(
   containers: [
     containerTemplate(
       name: "jnlp",
-      image: "quay.io/gamerefinery/jenkins-slave-skopeo-centos:master",
+      image: "quay.io/redhat-emea-ssa-team/jenkins-slave-scopeo",
       resourceRequestMemory: "512Mi",
       resourceLimitMemory: "1Gi"
     )
