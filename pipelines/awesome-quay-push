@@ -33,7 +33,7 @@ podTemplate(
           withCredentials([usernamePassword(credentialsId: "fantastic-quay-cicd-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
             def srcCatalogRef = openshift.selector("istag", "awesome:latest").object().image.dockerImageReference
             def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
-            sh "skopeo copy docker://${srcCatalogRef} docker://quay.io/eedhat-emea-ssa-team/${app}:latest --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
+            sh "skopeo copy docker://${srcCatalogRef} docker://quay.io/redhat-emea-ssa-team/${app}:latest --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
           }
         }
       }
