@@ -31,6 +31,8 @@ podTemplate(
       script {
         openshift.withCluster() {
           withCredentials([usernamePassword(credentialsId: "fantastic-quay-cicd-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
+            sh "echo $QUAY_USER"
+            sh "echo $QUAY_PWD"
             def srcCatalogRef = openshift.selector("istag", "awesome:latest").object().image.dockerImageReference
             def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
             sh "skopeo copy docker://${srcCatalogRef} docker://quay.io/edhat-emea-ssa-team/${app}:latest --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false"
