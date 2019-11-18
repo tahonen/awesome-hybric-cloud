@@ -14,3 +14,4 @@ spec:
     name: awesome
   sessionAffinity: None
   type: ClusterIP
+status:
