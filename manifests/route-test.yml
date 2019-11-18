@@ -1,0 +1,14 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app: awesome
+  name: awesome-default
+spec:
+  host: awesome-dev.ocpdev.io
+  subdomain: ""
+  to:
+    kind: Service
+    name: awesome
+    weight: 100
+  wildcardPolicy: None
