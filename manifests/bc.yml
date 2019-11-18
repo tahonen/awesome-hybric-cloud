@@ -1,0 +1,39 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: awesome
+  name: awesome
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: awesome:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    git:
+      ref: development
+      uri: https://github.com/tahonen/awesome-hybric-cloud.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: httpd:2.4
+        namespace: openshift
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - imageChange:
+    type: ImageChange
+  - type: ConfigChange
+  - github:
+      secret: bI38sL4tdUPFiOyFrLQBXWsbYTELXGXhFUpeGOxt
+    type: GitHub
+  - generic:
+      secret: t7eav76joW0E1oI0Tu7Jt2BI3kmvFUqCh14VPRqi
+    type: Generic
