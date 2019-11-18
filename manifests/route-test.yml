@@ -12,3 +12,4 @@ spec:
     name: awesome
     weight: 100
   wildcardPolicy: None
+status:
