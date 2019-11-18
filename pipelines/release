@@ -29,7 +29,6 @@ podTemplate(
 ) {
   node('skopeo') {
     stage('Deploy to onprem cluster'){
-      step{
         script {
           openshift.withCluster() {
             def srcCatalogRef = ''
@@ -45,23 +44,21 @@ podTemplate(
           }
         }
         notifySlack("${app} - Deployed to onprem.", env.SLACK_CHANNEL, [])
-      }
+      
     }
     stage('Deploy to US'){
-      step{
         script {
           sh "echo Deploy to US"
         }
         notifySlack("${app} - Deployed to US.", env.SLACK_CHANNEL, [])
-      }
+      
     }
     stage('Deploy to APAC'){
-      step{
         script {
           sh "echo Deploy to APAC"
         }
         notifySlack("${app} - Deployed to APAC. ", env.SLACK_CHANNEL, [])
-      }
+      
     }
   }
 
