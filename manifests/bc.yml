@@ -37,3 +37,4 @@ spec:
   - generic:
       secret: t7eav76joW0E1oI0Tu7Jt2BI3kmvFUqCh14VPRqi
     type: Generic
+status:
