@@ -1,2 +1,2 @@
-# awesome-hybric-cloud
+# awesome-hybrid-cloud
 Hybrid Cloud Demo which is awesome
